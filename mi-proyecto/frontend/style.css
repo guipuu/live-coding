@@ -303,3 +303,116 @@ body.dark-mode a {
 body.dark-mode label {
   color: #ffffff !important;
 }
+
+/* ==========================================
+   FIX DARK MODE: PÁGINA DE PERFIL
+========================================== */
+
+/* 1. La tarjeta principal del usuario (Avatar y Nombre) */
+body.dark-mode #perfil-header, 
+body.dark-mode main.container > article:first-of-type {
+    background-color: var(--blanco-puro) !important; /* Verde muy oscuro */
+    border: 1px solid var(--verde-brillante);
+}
+
+body.dark-mode #nombre-usuario-perfil {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px rgba(52, 211, 153, 0.3);
+}
+
+/* 2. Los mensajes dentro de "Mis Publicaciones" */
+body.dark-mode #mis-mensajes article {
+    background-color: var(--blanco-puro) !important;
+    border-left: 4px solid var(--verde-brillante);
+    box-shadow: 4px 4px 0px 0px #011a14;
+}
+
+/* 3. El texto y la fecha de tus publicaciones */
+body.dark-mode #mis-mensajes article p {
+    color: #e2e8f0 !important; /* Gris muy claro, casi blanco */
+}
+
+body.dark-mode #mis-mensajes article header strong {
+    color: var(--verde-brillante) !important; /* Tu nombre en verde neón */
+}
+
+body.dark-mode #mis-mensajes article header small {
+    color: #94a3b8 !important; /* Fecha en gris suave */
+}
+
+/* 4. El título "Mis Publicaciones" */
+body.dark-mode #muro-mensajes h2 {
+    color: #ffffff !important;
+    border-bottom: 2px solid var(--verde-oscuro);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* ==========================================
+   FIX DEFINITIVO: TARJETA DE PERFIL DARK
+========================================= */
+
+/* Forzamos que el recuadro del perfil sea verde muy oscuro en modo dark */
+body.dark-mode #perfil-header,
+body.dark-mode article#perfil-header {
+    background-color: #01261d !important; /* Un verde casi negro */
+    border: 2px solid var(--verde-brillante) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+}
+
+/* Forzamos que el nombre "Snopy" sea blanco o verde neón */
+body.dark-mode #nombre-usuario-perfil {
+    color: #ffffff !important; 
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* Forzamos que el texto secundario sea verde menta suave */
+body.dark-mode #perfil-header p,
+body.dark-mode #perfil-header strong {
+    color: #a7f3d0 !important;
+}
+
+/* Ajuste para que la imagen de perfil no se vea rara */
+body.dark-mode #foto-perfil {
+    border-color: var(--verde-brillante) !important;
+    background-color: #064e3b !important;
+}
+
+/* ==========================================
+   SUPER-FIX DEFINITIVO MODO OSCURO (PERFIL)
+========================================== */
+
+body.dark-mode #perfil-header {
+  background-color: #022c22 !important; /* Verde casi negro */
+  border: 3px solid var(--verde-brillante) !important;
+  color: #ffffff !important;
+}
+
+/* El nombre "Snopy" en blanco puro para que se lea perfecto */
+body.dark-mode #nombre-usuario-perfil {
+  color: #ffffff !important;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+/* Los textos secundarios en verde menta */
+body.dark-mode #perfil-header p, 
+body.dark-mode #perfil-header strong {
+  color: #a7f3d0 !important;
+}
+
+/* Las publicaciones del usuario */
+body.dark-mode #mis-mensajes article {
+  background-color: #064e3b !important; /* Un poco más claro que el fondo */
+  border: 2px solid var(--verde-brillante) !important;
+  box-shadow: 4px 4px 0px 0px #011a14 !important;
+}
+
+body.dark-mode #mis-mensajes article p {
+  color: #ffffff !important;
+}
+
+body.dark-mode #mis-mensajes article header {
+  background-color: #022c22 !important;
+  border-bottom: 2px solid var(--verde-brillante);
+}

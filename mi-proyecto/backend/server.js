@@ -105,5 +105,18 @@ app.post('/api/messages', (req, res) => {
     );
 });
 
+// ==========================================
+// RUTA 4: BORRAR MENSAJE
+// ==========================================
+app.delete('/api/messages/:id', (req, res) => {
+    const { id } = req.params;
+    
+    // Borramos el mensaje por su ID
+    db.run("DELETE FROM mensajes WHERE id = ?", [id], function(err) {
+        if (err) return res.status(500).json({ error: "Error al borrar" });
+        res.json({ mensaje: "Mensaje eliminado correctamente" });
+    });
+});
+
 // El servidor se pone a escuchar al final
 app.listen(PORT, () => console.log(`🚀 API corriendo en el puerto ${PORT}`));

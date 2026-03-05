@@ -204,6 +204,7 @@ async function cargarMisMensajes(usuario) {
     try {
         const respuesta = await fetch('http://localhost:3000/api/messages');
         const mensajes = await respuesta.json();
+        // Filtramos solo los del usuario logueado
         const misMensajes = mensajes.filter(m => m.autor === usuario);
         
         contenedorMisMensajes.innerHTML = misMensajes.length ? '' : '<p style="text-align:center;">No has plantado nada aún.</p>';
@@ -216,10 +217,32 @@ async function cargarMisMensajes(usuario) {
                     <small style="float:right;">${new Date(msg.fecha).toLocaleString()}</small>
                 </header>
                 <p>${msg.texto}</p>
+                <footer>
+                    <button onclick="borrarMensaje(${msg.id})" style="background-color: #dc2626; border: none; padding: 5px 15px; font-size: 0.8rem;">🗑️ Borrar</button>
+                </footer>
             `;
             contenedorMisMensajes.appendChild(article);
         });
     } catch (e) { console.error("Error en perfil"); }
+}
+
+// NUEVA FUNCIÓN: Habla con el backend para borrar
+window.borrarMensaje = async function(id) {
+    if (!confirm("¿Seguro que quieres arrancar esta planta? (Borrar mensaje)")) return;
+
+    try {
+        const respuesta = await fetch(`http://localhost:3000/api/messages/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (respuesta.ok) {
+            mostrarPopUp("Mensaje eliminado");
+            const usuarioActual = localStorage.getItem('usuarioActivo');
+            cargarMisMensajes(usuarioActual); // Recargamos para que desaparezca
+        }
+    } catch (e) {
+        mostrarPopUp("No se pudo borrar", true);
+    }
 }
 
 if (btnLogout) {
