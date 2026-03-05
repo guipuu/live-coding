@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar - Green Place</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>🌿 Green Place</strong></li>
+        </ul>
+        <ul id="nav-actions">
+            <li><button id="btn-dark-mode" class="outline" style="border: none; font-size: 1.5rem; padding: 0.5rem; box-shadow: none; background: transparent;">🌓</button></li>
+            <li><a href="index.html" role="button" class="outline">Volver al Muro</a></li>
+            <li><a href="registro.html" role="button">Registrarse</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article class="grid" style="border-radius: 16px; padding: 2rem; background-color: var(--blanco-puro);">
+            <div>
+                <hgroup>
+                    <h2 style="color: var(--color);">Iniciar Sesión</h2>
+                    <h3 style="color: var(--color);">Bienvenido de nuevo a Green Place</h3>
+                </hgroup>
+                <form id="form-login">
+                    <label for="username">Usuario o Email</label>
+                    <input type="text" id="username" name="username" placeholder="Ej. dev_novato" required>
+
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit">Acceder</button>
+                    <small>¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></small>
+                </form>
+            </div>
+        </article>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

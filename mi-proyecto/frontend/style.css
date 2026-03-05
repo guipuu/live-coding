@@ -1,0 +1,305 @@
+/* ==========================================
+   1. VARIABLES DE ALTO CONTRASTE (Verde y Blanco)
+========================================== */
+:root {
+    --verde-oscuro: #064e3b;  /* Verde bosque muy oscuro casi negro */
+    --verde-brillante: #10b981; /* Verde esmeralda para destacar */
+    --verde-claro: #d1fae5;   /* Verde muy pálido para fondos secundarios */
+    --blanco-puro: #ffffff;
+    
+    /* Sobrescribimos variables de Pico.css */
+    --primary: var(--verde-brillante);
+    --primary-hover: #059669;
+    --background-color: var(--verde-claro); /* Fondo de la página verde muy clarito */
+    --color: var(--verde-oscuro); /* Texto principal oscuro para máximo contraste */
+  }
+  
+  /* ==========================================
+     2. FONDOS Y FORMAS DE HOJAS (El truco de CSS)
+  ========================================== */
+  body {
+    padding-top: 2rem;
+    background-color: var(--background-color);
+    /* Un patrón de cuadrícula de fondo para quitarle el minimalismo */
+    background-image: 
+      linear-gradient(var(--blanco-puro) 2px, transparent 2px),
+      linear-gradient(90deg, var(--blanco-puro) 2px, transparent 2px);
+    background-size: 50px 50px;
+    position: relative;
+    overflow-x: hidden; /* Evita scroll horizontal por las hojas */
+    z-index: 0;
+  }
+  
+  /* HOJAS LATERALES CON CSS PURO */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, var(--verde-brillante), var(--verde-oscuro));
+    z-index: -1;
+    opacity: 0.8;
+    box-shadow: 0 20px 25px -5px rgba(6, 78, 59, 0.4);
+  }
+  
+  /* Hoja izquierda arriba */
+  body::before {
+    top: 10%;
+    left: -80px;
+    border-radius: 0 50% 0 50%; /* La magia que crea la forma de hoja */
+    transform: rotate(15deg);
+  }
+  
+  /* Hoja derecha abajo */
+  body::after {
+    bottom: 10%;
+    right: -80px;
+    border-radius: 50% 0 50% 0; /* Hoja invertida */
+    transform: rotate(-25deg);
+  }
+  
+  /* ==========================================
+     3. MURO DE MENSAJES Y TARJETAS (Cero minimalista)
+  ========================================== */
+  main.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(6, 78, 59, 0.25);
+    border: 4px solid var(--verde-oscuro);
+  }
+  
+  #lista-mensajes article {
+    margin-bottom: 2rem; 
+    border-radius: 12px; 
+    /* Alto contraste: Fondo blanco, borde grueso verde oscuro */
+    background-color: var(--blanco-puro);
+    border: 3px solid var(--verde-oscuro);
+    /* Sombra sólida y dura (estilo brutalista/retro) */
+    box-shadow: 6px 6px 0px 0px var(--verde-oscuro);
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  #lista-mensajes article:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0px 0px var(--verde-oscuro);
+  }
+  
+  #lista-mensajes header {
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--verde-oscuro); 
+    margin-bottom: 1rem;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-puro);
+    padding: 0.5rem 1rem;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  #lista-mensajes p {
+    padding: 0 1rem 1rem 1rem;
+    font-weight: 500;
+  }
+  
+  /* ==========================================
+     4. FORMULARIOS Y BOTONES (Destacados)
+  ========================================== */
+  input, textarea {
+    border: 2px solid var(--verde-oscuro) !important;
+    background-color: var(--blanco-puro) !important;
+    color: var(--verde-oscuro) !important;
+    font-weight: bold;
+  }
+  
+  input:focus, textarea:focus {
+    box-shadow: 4px 4px 0px 0px var(--verde-brillante) !important;
+    outline: none;
+  }
+  
+ /* ==========================================
+   BOTONES GREEN PLACE (Verde y Blanco limpios)
+========================================== */
+nav a[role="button"],
+button[type="submit"] {
+  background-color: var(--verde-oscuro) !important;
+  color: var(--blanco-puro) !important;
+  border: none !important;
+  border-radius: 8px !important; /* Bordes redondeados suaves y normales */
+  padding: 0.8rem 1.5rem !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto al pasar el ratón */
+nav a[role="button"]:hover,
+button[type="submit"]:hover {
+  background-color: var(--verde-brillante) !important;
+  color: var(--verde-oscuro) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Ajuste para el botón secundario (Entrar) en el menú */
+nav a[role="button"].outline {
+  background-color: transparent !important;
+  border: 2px solid var(--verde-oscuro) !important;
+  color: var(--verde-oscuro) !important;
+  box-shadow: none;
+}
+
+nav a[role="button"].outline:hover {
+  background-color: var(--verde-oscuro) !important;
+  color: var(--blanco-puro) !important;
+}
+  
+/* ... [todo tu código anterior de los botones de Green Place] ... */
+
+nav a[role="button"].outline:hover {
+    background-color: var(--verde-oscuro) !important;
+    color: var(--blanco-puro) !important;
+  }
+    
+  /* ==========================================
+     BARRA DE BÚSQUEDA GREEN PLACE
+  ========================================== */
+  input[type="search"] {
+    background-color: var(--verde-oscuro) !important;
+    color: var(--blanco-puro) !important;
+    border: 2px solid var(--verde-brillante) !important;
+    border-radius: 25px !important; /* Bordes bien redondeados estilo píldora */
+    padding: 0.6rem 1.2rem !important;
+    transition: all 0.3s ease;
+  }
+  
+  /* Color del texto "Buscar en el foro..." */
+  input[type="search"]::placeholder {
+    color: #a7f3d0 !important; /* Un verde menta muy clarito */
+    opacity: 0.8;
+  }
+  
+  /* Efecto al hacer clic para escribir */
+  input[type="search"]:focus {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important;
+    border-color: var(--blanco-puro) !important;
+    background-color: #022c22 !important; /* Un verde aún más oscuro al enfocar */
+  }
+  
+  /* ==========================================
+     UTILIDADES
+  ========================================== */
+  .error-text { color: #dc2626; font-weight: bold; font-size: 0.9rem; margin-top: -1rem; margin-bottom: 1rem; display: block; }
+  .oculto { display: none !important; }
+
+  /* Utilidades */
+  .error-text { color: #dc2626; font-weight: bold; font-size: 0.9rem; margin-top: -1rem; margin-bottom: 1rem; display: block; }
+  .oculto { display: none !important; }
+
+  /* ==========================================
+   MODO OSCURO (DARK MODE)
+========================================== */
+body.dark-mode {
+    --verde-oscuro: #d1fae5;  /* Invertimos: el oscuro ahora es el claro */
+    --verde-brillante: #34d399;
+    --verde-claro: #022c22;   /* Fondo casi negro verdoso */
+    --blanco-puro: #064e3b;   /* Las tarjetas ahora son verde oscuro */
+    --background-color: var(--verde-claro);
+    --color: var(--verde-oscuro);
+  }
+  
+  body.dark-mode main.container {
+    background-color: rgba(2, 44, 34, 0.95);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  
+  body.dark-mode #lista-mensajes article {
+    box-shadow: 6px 6px 0px 0px #022c22; /* Sombra más oscura */
+    color: #ffffff; /* Texto blanco para que se lea bien */
+  }
+  
+  /* ==========================================
+     HILOS DE MENSAJES (Estilo Twitter)
+  ========================================== */
+  .hilo-respuesta {
+    margin-left: 3rem !important; 
+    position: relative;
+    transform: scale(0.95); 
+    border-color: var(--verde-brillante) !important;
+  }
+  
+  .hilo-respuesta::before {
+    content: '';
+    position: absolute;
+    left: -2rem; 
+    top: -2.5rem; 
+    height: calc(100% + 2rem); 
+    width: 4px;
+    background-color: var(--verde-brillante);
+    border-radius: 4px;
+    opacity: 0.5;
+  }
+
+
+
+  /* ==========================================
+   FIX: COLORES DE TÍTULOS EN MODO OSCURO
+========================================== */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode strong,
+body.dark-mode label,
+body.dark-mode p {
+  color: var(--verde-oscuro) !important; /* Recuerda que en dark mode, esta variable es un verde muy clarito */
+}
+
+/* Para que la barra que separa secciones no se quede negra */
+body.dark-mode hr {
+  border-color: var(--verde-oscuro) !important;
+  opacity: 0.3;
+}
+
+/* ==========================================
+   FIX DE EMERGENCIA: CONTRASTES EN MODO OSCURO
+========================================== */
+
+/* 1. Arreglar que los nombres (Snoop Dogg, etc.) sean invisibles */
+body.dark-mode #lista-mensajes header,
+body.dark-mode #mis-mensajes header {
+  background-color: var(--verde-claro) !important; /* Fondo súper oscuro */
+  border-bottom: 3px solid var(--verde-brillante);
+}
+
+body.dark-mode #lista-mensajes header strong,
+body.dark-mode #mis-mensajes header strong,
+body.dark-mode #lista-mensajes header small,
+body.dark-mode #mis-mensajes header small {
+  color: #ffffff !important; /* Letra blanca pura para máximo contraste */
+}
+
+/* 2. Arreglar la página de Login y Registro */
+body.dark-mode input, 
+body.dark-mode textarea {
+  background-color: #022c22 !important; /* Fondo súper oscuro para que no deslumbre */
+  color: #ffffff !important; /* Texto que escribes en blanco */
+  border-color: var(--verde-brillante) !important;
+}
+
+body.dark-mode small {
+  color: #a7f3d0 !important; /* El texto de "¿Ya tienes cuenta?" en verde menta claro */
+}
+
+body.dark-mode a {
+  color: var(--verde-brillante) !important; /* Los enlaces brillan en verde esmeralda */
+}
+
+/* 3. Asegurar que los textos del formulario (labels) se vean */
+body.dark-mode label {
+  color: #ffffff !important;
+}

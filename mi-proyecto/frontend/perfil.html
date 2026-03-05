@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Green Place</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>🌿 Green Place</strong></li>
+        </ul>
+        <ul id="nav-actions">
+            <li><button id="btn-dark-mode" class="outline" style="border: none; font-size: 1.5rem; padding: 0.5rem;">🌓</button></li>
+            <li><a href="index.html" role="button" class="outline">Volver al Muro</a></li>
+            <li><button id="btn-logout" style="background-color: #dc2626 !important; color: white !important;">Cerrar Sesión</button></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article style="text-align: center; border-radius: 16px; padding: 2rem;">
+            <img id="foto-perfil" src="" alt="Avatar" style="width: 150px; height: 150px; border-radius: 50%; border: 5px solid var(--verde-brillante); background-color: white;">
+            <h2 id="nombre-usuario-perfil" style="margin-top: 1rem;">Cargando...</h2>
+            <p><strong>Jugador oficial de Green Place</strong></p>
+        </article>
+
+        <hr style="border-color: var(--verde-oscuro); margin: 2rem 0;">
+
+        <section id="muro-mensajes">
+            <h2>Mis Publicaciones</h2>
+            <div id="mis-mensajes">
+                </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Place - Foro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>🌿 Green Place</strong></li>
+        </ul>
+        
+        
+
+        <ul id="nav-actions">
+            <li><button id="btn-dark-mode" class="outline" style="border: none; font-size: 1.5rem; padding: 0.5rem; box-shadow: none; background: transparent;">🌓</button></li>
+            <li><a href="perfil.html" role="button" class="outline">Mi Perfil</a></li>
+            <li><a href="login.html" role="button">Entrar</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section id="seccion-publicar">
+            <h2>Publicar en el foro</h2>
+            <form id="form-mensaje">
+                <textarea id="texto-mensaje" placeholder="¿Qué quieres compartir con la comunidad?" required maxlength="255"></textarea>
+                <button type="submit">Enviar Mensaje</button>
+            </form>
+        </section>
+
+        <hr style="border-color: var(--verde-oscuro); margin: 2rem 0;">
+
+        <section id="muro-mensajes">
+            <h2>Últimos Mensajes</h2>
+            <div id="lista-mensajes">
+                </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
