@@ -416,3 +416,91 @@ body.dark-mode #mis-mensajes article header {
   background-color: #022c22 !important;
   border-bottom: 2px solid var(--verde-brillante);
 }
+
+
+
+
+
+/* ==========================================
+   FIX DEFINITIVO: MODAL COMPLETO EN DARK MODE
+========================================== */
+
+/* 1. Fondo para TODO el modal (cuerpo, cabecera y pie) */
+body.dark-mode #modal-borrar article,
+body.dark-mode #modal-borrar article > header,
+body.dark-mode #modal-borrar article > footer {
+    background-color: #022c22 !important; /* Verde casi negro */
+    border-color: var(--verde-brillante) !important;
+}
+
+/* 2. El título "⚠️ ¿Arrancar esta planta?" en blanco puro */
+body.dark-mode #modal-borrar article > header strong {
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+/* 3. El botón de Cancelar para que se vea bien */
+body.dark-mode #modal-borrar button.secondary.outline {
+    color: #a7f3d0 !important; /* Verde menta */
+    border-color: #a7f3d0 !important;
+}
+
+body.dark-mode #modal-borrar button.secondary.outline:hover {
+    background-color: #a7f3d0 !important;
+    color: #022c22 !important;
+}
+
+
+
+/* ==========================================
+   FIX NUCLEAR: DESTRUIR FONDOS BLANCOS EN MODO OSCURO
+========================================== */
+
+/* Oscurecemos de golpe todos los artículos, cabeceras y pies de página */
+body.dark-mode article,
+body.dark-mode dialog article,
+body.dark-mode article > header,
+body.dark-mode article > footer,
+body.dark-mode dialog article > header,
+body.dark-mode dialog article > footer,
+body.dark-mode #perfil-header {
+    background-color: #022c22 !important; /* Verde muy oscuro */
+    color: #ffffff !important;
+    border-color: #10b981 !important; /* Borde verde brillante */
+}
+
+/* Forzamos que los textos y títulos dentro sean blancos */
+body.dark-mode article p,
+body.dark-mode dialog article p,
+body.dark-mode dialog article > header strong,
+body.dark-mode #nombre-usuario-perfil {
+    color: #ffffff !important;
+}
+
+/* El botón de cancelar en el modal */
+body.dark-mode dialog article button.secondary.outline {
+    color: #a7f3d0 !important;
+    border-color: #a7f3d0 !important;
+}
+
+body.dark-mode dialog article button.secondary.outline:hover {
+    background-color: #a7f3d0 !important;
+    color: #022c22 !important;
+}
+
+/* ==========================================
+   FIX: ELIMINAR EL FONDO BLANCO INFERIOR
+========================================== */
+body.dark-mode,
+html {
+    min-height: 100vh; /* Obliga a la página a medir al menos el 100% de tu pantalla */
+}
+
+body.dark-mode {
+    background-color: #011e17 !important; /* Un verde súper oscuro para el fondo base */
+}
+
+/* Asegurarnos de que el contenedor principal crezca si es necesario */
+main.container {
+    min-height: calc(100vh - 100px); /* Ajusta según el tamaño de tu cabecera */
+}

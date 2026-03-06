@@ -18,19 +18,19 @@ const db = new sqlite3.Database('./foro.db', (err) => {
     } else {
         console.log("🌿 Base de datos conectada.");
         
-        // 1. Crear tabla de usuarios
         db.run(`CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             username TEXT UNIQUE NOT NULL, 
             password TEXT NOT NULL
         )`);
 
-        // 2. ¡EL FIX!: Crear tabla de mensajes (Faltaba esto)
+        // Tabla de mensajes preparada para los HILOS
         db.run(`CREATE TABLE IF NOT EXISTS mensajes (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             autor TEXT NOT NULL, 
             texto TEXT NOT NULL, 
-            fecha TEXT NOT NULL
+            fecha TEXT NOT NULL,
+            parent_id INTEGER DEFAULT NULL
         )`);
     }
 });
@@ -59,9 +59,7 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).json({ error: "Faltan usuario o contraseña" });
-    }
+    if (!username || !password) return res.status(400).json({ error: "Faltan usuario o contraseña" });
 
     db.get("SELECT * FROM usuarios WHERE username = ?", [username], async (err, user) => {
         if (err) return res.status(500).json({ error: "Error en la base de datos" });
@@ -77,29 +75,25 @@ app.post('/api/login', (req, res) => {
 });
 
 // ==========================================
-// RUTA 3: MENSAJES
+// RUTA 3: MENSAJES (Muro e Hilos)
 // ==========================================
-
-// Obtener todos los mensajes
 app.get('/api/messages', (req, res) => {
-    db.all("SELECT * FROM mensajes ORDER BY id DESC", [], (err, rows) => {
+    db.all("SELECT * FROM mensajes ORDER BY fecha ASC", [], (err, rows) => {
         if (err) return res.status(500).json({ error: "Error al leer mensajes" });
         res.json(rows);
     });
 });
 
-// Publicar un mensaje nuevo
+// AQUÍ ESTÁ EL FIX CLAVE: Recibir parent_id
 app.post('/api/messages', (req, res) => {
-    const { autor, texto } = req.body;
+    const { autor, texto, parent_id } = req.body; 
+    
     if (!autor || !texto) return res.status(400).json({ error: "Faltan datos" });
 
-    db.run("INSERT INTO mensajes (autor, texto, fecha) VALUES (?, ?, ?)", 
-        [autor, texto, new Date().toISOString()], 
+    db.run("INSERT INTO mensajes (autor, texto, fecha, parent_id) VALUES (?, ?, ?, ?)", 
+        [autor, texto, new Date().toISOString(), parent_id || null], 
         function(err) {
-            if (err) {
-                console.error("❌ Error de SQL:", err.message);
-                return res.status(500).json({ error: "Error al guardar mensaje en DB" });
-            }
+            if (err) return res.status(500).json({ error: "Error al guardar mensaje en DB" });
             res.status(201).json({ id: this.lastID });
         }
     );
@@ -110,13 +104,10 @@ app.post('/api/messages', (req, res) => {
 // ==========================================
 app.delete('/api/messages/:id', (req, res) => {
     const { id } = req.params;
-    
-    // Borramos el mensaje por su ID
     db.run("DELETE FROM mensajes WHERE id = ?", [id], function(err) {
         if (err) return res.status(500).json({ error: "Error al borrar" });
         res.json({ mensaje: "Mensaje eliminado correctamente" });
     });
 });
 
-// El servidor se pone a escuchar al final
 app.listen(PORT, () => console.log(`🚀 API corriendo en el puerto ${PORT}`));
