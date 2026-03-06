@@ -21,9 +21,19 @@ if (btnDarkMode) {
 let idParaBorrar = null;
 
 // ==========================================
+// 🛡️ FUNCIÓN DE SEGURIDAD (ANTIHACKEOS XSS)
+// ==========================================
+// Convierte cualquier código raro en texto inofensivo
+function limpiarTexto(texto) {
+    if (!texto) return "";
+    const div = document.createElement('div');
+    div.textContent = texto;
+    return div.innerHTML; 
+}
+
+// ==========================================
 // 1. SISTEMA DE ALERTAS (MODAL GENÉRICO)
 // ==========================================
-// Creamos el HTML de la ventana emergente de avisos una sola vez
 function crearModalAviso() {
     if (document.getElementById('modal-aviso')) return; 
     
@@ -45,33 +55,30 @@ function crearModalAviso() {
 }
 crearModalAviso();
 
-// Función para cerrar este aviso
 window.cerrarModalAviso = function() {
     const modal = document.getElementById('modal-aviso');
     if(modal) modal.removeAttribute('open');
 };
 
-// Transformamos la antigua función para que ahora use la ventana emergente
 window.mostrarPopUp = function(mensaje, esError = false) {
     const modal = document.getElementById('modal-aviso');
     const titulo = document.getElementById('modal-aviso-titulo');
     const texto = document.getElementById('modal-aviso-mensaje');
 
-    // Cambiamos el título y el color según si es un error o un éxito
     if (esError) {
         titulo.innerHTML = '⚠️ Error';
-        titulo.style.color = '#dc2626'; // Rojo
+        titulo.style.color = '#dc2626'; 
     } else {
         titulo.innerHTML = '✅ Genial';
-        titulo.style.color = 'var(--verde-brillante)'; // Verde
+        titulo.style.color = 'var(--verde-brillante)'; 
     }
 
     texto.textContent = mensaje;
-    modal.setAttribute('open', true); // Mostramos el pop-up
+    modal.setAttribute('open', true); 
 };
 
 // ==========================================
-// 2. CARGAR MENSAJES (Muro Principal Anidado)
+// 2. CARGAR MENSAJES (Muro Principal)
 // ==========================================
 async function cargarMensajes() {
     const contenedorMensajes = document.getElementById('lista-mensajes');
@@ -104,22 +111,26 @@ async function cargarMensajes() {
                 ? `<button type="button" id="btn-toggle-${msg.id}" class="outline secondary" onclick="toggleRespuestas(${msg.id}, ${numeroRespuestas})" style="font-size: 0.7rem; padding: 2px 10px; border: none; color: var(--verde-brillante); cursor: pointer; background: transparent; margin-bottom: 0;">🔽 ${numeroRespuestas} respuesta(s)</button>` 
                 : '';
 
+            // 🛡️ Aplicamos limpieza de seguridad
+            const autorLimpio = limpiarTexto(msg.autor);
+            const textoLimpio = limpiarTexto(msg.texto);
+
             article.innerHTML = `
                 <header style="display: flex; align-items: center; gap: 12px;">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${msg.autor}&backgroundColor=10b981" alt="Avatar" style="width: 45px; height: 45px; border-radius: 50%; background: #10b98140;">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${autorLimpio}&backgroundColor=10b981" alt="Avatar" style="width: 45px; height: 45px; border-radius: 50%; background: #10b98140;">
                     <div style="flex-grow: 1;">
-                        <strong style="margin: 0; display: block;">${msg.autor}</strong>
+                        <strong style="margin: 0; display: block;">${autorLimpio}</strong>
                         <small style="opacity: 0.7;">${new Date(msg.fecha).toLocaleString()}</small>
                     </div>
                 </header>
-                <p style="margin-top: 1rem;">${msg.texto}</p>
+                <p style="margin-top: 1rem;">${textoLimpio}</p>
                 <footer style="display: flex; gap: 10px; align-items: center; border-top: 1px solid #10b98140; padding-top: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
                     <button type="button" class="outline" onclick="toggleFormularioRespuesta(${msg.id})" style="font-size: 0.7rem; padding: 2px 10px; margin-bottom: 0;">💬 Responder</button>
                     ${btnVerRespuestasHTML}
                 </footer>
                 
                 <div id="caja-respuesta-${msg.id}" style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--verde-brillante);">
-                    <input type="text" id="input-respuesta-${msg.id}" placeholder="Escribe tu respuesta a ${msg.autor}..." style="margin-bottom: 0.5rem; width: 100%;">
+                    <input type="text" id="input-respuesta-${msg.id}" placeholder="Escribe tu respuesta a ${autorLimpio}..." style="margin-bottom: 0.5rem; width: 100%;">
                     <button type="button" onclick="enviarRespuestaDirecta(${msg.id})" style="font-size: 0.8rem; padding: 5px 15px; background-color: var(--verde-brillante); color: white; border: none; border-radius: 5px; cursor:pointer;">Enviar Respuesta</button>
                 </div>
 
@@ -132,12 +143,15 @@ async function cargarMensajes() {
                 
                 susRespuestas.forEach(res => {
                     const reply = document.createElement('div');
+                    const resAutorLimpio = limpiarTexto(res.autor);
+                    const resTextoLimpio = limpiarTexto(res.texto);
+
                     reply.style = "padding: 0.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #10b98140; display: flex; gap: 10px; align-items: flex-start;";
                     reply.innerHTML = `
-                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${res.autor}&backgroundColor=10b981" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; margin-top: 3px;">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${resAutorLimpio}&backgroundColor=10b981" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; margin-top: 3px;">
                         <div style="flex-grow: 1;">
-                            <strong style="font-size: 0.85rem; color: var(--verde-brillante);">${res.autor}</strong>
-                            <p style="margin: 0; padding: 0; font-size: 0.9rem; margin-top: 0.2rem;">${res.texto}</p>
+                            <strong style="font-size: 0.85rem; color: var(--verde-brillante);">${resAutorLimpio}</strong>
+                            <p style="margin: 0; padding: 0; font-size: 0.9rem; margin-top: 0.2rem;">${resTextoLimpio}</p>
                         </div>
                         <small style="font-size: 0.7rem; opacity: 0.7; white-space: nowrap;">${new Date(res.fecha).toLocaleString()}</small>
                     `;
@@ -154,12 +168,11 @@ async function cargarMensajes() {
 cargarMensajes();
 
 // ==========================================
-// 3. LÓGICAS DE RESPUESTAS DIRECTAS E HILOS
+// 3. LÓGICAS DE RESPUESTAS E HILOS
 // ==========================================
 window.toggleRespuestas = function(id, total) {
     const hilo = document.getElementById(`hilo-${id}`);
     const btn = document.getElementById(`btn-toggle-${id}`);
-    
     if (hilo.style.display === 'none') {
         hilo.style.display = 'block';
         btn.innerHTML = `🔼 Ocultar respuestas`;
@@ -180,29 +193,29 @@ window.toggleFormularioRespuesta = function(id) {
 };
 
 window.enviarRespuestaDirecta = async function(parentId) {
-    const usuarioActual = localStorage.getItem('usuarioActivo');
+    const token = localStorage.getItem('token'); // 🛡️ Buscamos el token de seguridad
     const inputCaja = document.getElementById(`input-respuesta-${parentId}`);
     const textoVal = inputCaja.value.trim();
 
-    if (!usuarioActual) return mostrarPopUp("Inicia sesión para participar.", true);
+    if (!token) return mostrarPopUp("Inicia sesión para participar.", true);
     if (!textoVal) return mostrarPopUp("La respuesta no puede estar vacía.", true);
 
     try {
         const respuesta = await fetch('http://localhost:3000/api/messages', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                autor: usuarioActual, 
-                texto: textoVal,
-                parent_id: parentId 
-            })
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // 🛡️ Mostramos la credencial
+            },
+            body: JSON.stringify({ texto: textoVal, parent_id: parentId })
         });
 
         if (respuesta.ok) {
             mostrarPopUp("¡Respuesta enviada!");
             cargarMensajes(); 
         } else {
-            mostrarPopUp("Error al publicar la respuesta.", true);
+            const data = await respuesta.json();
+            mostrarPopUp(data.error || "Error al publicar.", true);
         }
     } catch (error) {
         mostrarPopUp("Error de conexión.", true);
@@ -216,24 +229,30 @@ const formMensaje = document.getElementById('form-mensaje');
 if (formMensaje) {
     formMensaje.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const usuarioActual = localStorage.getItem('usuarioActivo');
+        const token = localStorage.getItem('token'); // 🛡️ Token
         const campoTexto = document.getElementById('texto-mensaje');
         const textoVal = campoTexto.value.trim();
 
-        if (!usuarioActual) return mostrarPopUp("Inicia sesión para participar.", true);
+        if (!token) return mostrarPopUp("Inicia sesión para participar.", true);
         if (!textoVal) return mostrarPopUp("El mensaje no puede estar vacío.", true);
 
         try {
             const respuesta = await fetch('http://localhost:3000/api/messages', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ autor: usuarioActual, texto: textoVal, parent_id: null })
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // 🛡️ Mostramos credencial
+                },
+                body: JSON.stringify({ texto: textoVal, parent_id: null }) 
             });
 
             if (respuesta.ok) {
                 campoTexto.value = ''; 
                 mostrarPopUp("¡Mensaje publicado!");
                 cargarMensajes(); 
+            } else {
+                const data = await respuesta.json();
+                mostrarPopUp(data.error || "Error al publicar.", true);
             }
         } catch (error) {
             mostrarPopUp("Error de conexión.", true);
@@ -242,7 +261,7 @@ if (formMensaje) {
 }
 
 // ==========================================
-// 5. REGISTRO Y LOGIN
+// 5. REGISTRO Y LOGIN (CON SEGURIDAD)
 // ==========================================
 const formRegistro = document.getElementById('form-registro');
 if (formRegistro) {
@@ -288,6 +307,8 @@ if (formLogin) {
             });
             const datos = await respuesta.json();
             if (respuesta.ok) {
+                // 🛡️ Guardamos el TOKEN generado por nuestro servidor casero
+                localStorage.setItem('token', datos.token);
                 localStorage.setItem('usuarioActivo', datos.username);
                 mostrarPopUp(`¡Bienvenido de nuevo, ${datos.username}!`);
                 setTimeout(() => window.location.href = 'index.html', 1500);
@@ -310,11 +331,15 @@ const btnLogout = document.getElementById('btn-logout');
 
 if (contenedorMisMensajes && nombrePerfil) {
     const usuarioActual = localStorage.getItem('usuarioActivo');
-    if (!usuarioActual) {
+    const token = localStorage.getItem('token');
+    
+    // Si no tiene token activo, lo mandamos al login
+    if (!usuarioActual || !token) {
         window.location.href = 'login.html';
     } else {
-        nombrePerfil.textContent = usuarioActual;
-        if (fotoPerfil) fotoPerfil.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${usuarioActual}&backgroundColor=10b981`;
+        const usuarioLimpio = limpiarTexto(usuarioActual);
+        nombrePerfil.textContent = usuarioLimpio;
+        if (fotoPerfil) fotoPerfil.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${usuarioLimpio}&backgroundColor=10b981`;
         cargarMisMensajes(usuarioActual);
     }
 }
@@ -331,15 +356,18 @@ async function cargarMisMensajes(usuario) {
         
         misMensajes.forEach(msg => {
             const article = document.createElement('article');
+            const autorLimpio = limpiarTexto(msg.autor);
+            const textoLimpio = limpiarTexto(msg.texto);
+
             article.innerHTML = `
                 <header style="display: flex; align-items: center; gap: 12px;">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${msg.autor}&backgroundColor=10b981" alt="Avatar" style="width: 45px; height: 45px; border-radius: 50%; background: #10b98140;">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${autorLimpio}&backgroundColor=10b981" alt="Avatar" style="width: 45px; height: 45px; border-radius: 50%; background: #10b98140;">
                     <div style="flex-grow: 1;">
-                        <strong style="margin: 0; display: block;">${msg.autor}</strong>
+                        <strong style="margin: 0; display: block;">${autorLimpio}</strong>
                         <small style="opacity: 0.7;">${new Date(msg.fecha).toLocaleString()}</small>
                     </div>
                 </header>
-                <p style="margin-top: 1rem;">${msg.texto}</p>
+                <p style="margin-top: 1rem;">${textoLimpio}</p>
                 <footer>
                     <button onclick="borrarMensaje(${msg.id})" style="background-color: #dc2626; border: none; padding: 5px 15px; font-size: 0.8rem;">🗑️ Borrar</button>
                 </footer>
@@ -351,14 +379,16 @@ async function cargarMisMensajes(usuario) {
 
 if (btnLogout) {
     btnLogout.addEventListener('click', () => {
+        // 🛡️ Borramos el rastro del token al salir
         localStorage.removeItem('usuarioActivo');
+        localStorage.removeItem('token');
         mostrarPopUp("Sesión cerrada correctamente.");
         setTimeout(() => window.location.href = 'login.html', 1500);
     });
 }
 
 // ==========================================
-// 7. MODAL DE BORRADO
+// 7. MODAL DE BORRADO (SÚPER PROTEGIDO)
 // ==========================================
 function crearModalBorrar() {
     if (document.getElementById('modal-borrar')) return; 
@@ -396,18 +426,26 @@ window.cerrarModal = function() {
 
 window.ejecutarBorrado = async function() {
     if (!idParaBorrar) return;
+    const token = localStorage.getItem('token'); // 🛡️ Buscamos el token
+    
     try {
         const respuesta = await fetch(`http://localhost:3000/api/messages/${idParaBorrar}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}` // 🛡️ Lo enviamos para poder borrar
+            }
         });
 
         if (respuesta.ok) {
             mostrarPopUp("Mensaje eliminado correctamente 🗑️");
             const usuarioActual = localStorage.getItem('usuarioActivo');
             cargarMisMensajes(usuarioActual); 
+        } else {
+            const data = await respuesta.json();
+            mostrarPopUp(data.error || "No se pudo borrar", true);
         }
     } catch (e) {
-        mostrarPopUp("No se pudo conectar con el servidor", true);
+        mostrarPopUp("Error de conexión con el servidor", true);
     }
     cerrarModal(); 
 };
